@@ -1,0 +1,13 @@
+body {
+  font-family: "Arial", sans-serif;
+}
+
+.vega-bind label {
+  font-family: "Arial", sans-serif !important;
+  font-size: 13px;
+}
+
+.vega-bind select {
+  font-family: "Arial", sans-serif !important;
+  font-size: 13px;
+}
