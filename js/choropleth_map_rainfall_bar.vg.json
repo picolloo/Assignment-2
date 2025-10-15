@@ -160,7 +160,8 @@
 							},
 							{
 								"field": "FLOOD_NORM",
-								"title": "Relative Flood Frequency"
+								"title": "Relative Flood Frequency",
+								"format": ".2f"
 							}
 						]
 					}
@@ -219,7 +220,10 @@
 									"November",
 									"December"
 								]
-							}
+							},
+							"axis": {
+                        "labelAngle": -45
+                    }
 						},
 						"y": {
 							"field": "total_rain",

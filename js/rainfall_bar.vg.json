@@ -1,0 +1,175 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": {
+      "expr": "'Average Daily Rainfall per Month - ' + selected_state + ' ' + selected_year"
+    }
+  },
+  "width": 900,
+  "height": 400,
+  "padding": {"top": 10, "left": 10, "right": 10},
+  "params": [
+    {
+      "name": "selected_state",
+      "value": "Johor",
+      "bind": {
+        "input": "select",
+        "options": [
+          "Johor",
+          "Kedah",
+          "Kelantan",
+          "Melaka",
+          "Negeri Sembilan",
+          "Pahang",
+          "Perak",
+          "Perlis",
+          "Pulau Pinang",
+          "Sabah",
+          "Sarawak",
+          "Selangor",
+          "Terengganu",
+          "Kuala Lumpur",
+          "Labuan",
+          "Putrajaya"
+        ],
+        "name": "Select State: "
+      }
+    },
+    {
+      "name": "selected_year",
+      "value": 2014,
+      "bind": {
+        "input": "select",
+        "options": ["2014", "2015", "2016", "2017", "2018", "2019", "2020"],
+        "name": "Select Year: "
+      }
+    }
+  ],
+  "data": {
+    "url": "https://raw.githubusercontent.com/picolloo/Homework-Week-10/main/data/rainfall.csv"
+  },
+  "transform": [
+    {"filter": "datum.State == selected_state"},
+    {"filter": "datum.Year == selected_year"},
+    {
+      "calculate": "toNumber(replace(datum['Average Rainfall'], ',', ''))",
+      "as": "avg_rain"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "bar", "color": "#4B9CD3"},
+      "encoding": {
+        "x": {
+          "field": "Month",
+          "type": "nominal",
+          "title": "Month",
+          "scale": {
+            "domain": [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December"
+            ]
+          }
+        },
+        "y": {
+          "field": "avg_rain",
+          "type": "quantitative",
+          "title": "Average Rainfall (mm)"
+        },
+        "tooltip": [
+          {"field": "State", "title": "State"},
+          {"field": "Year", "title": "Year"},
+          {"field": "Month", "title": "Month"},
+          {"field": "avg_rain", "title": "Average Rainfall (mm)"}
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "joinaggregate": [
+            {"op": "max", "field": "avg_rain", "as": "max_rain"}
+          ]
+        },
+        {"filter": "datum.avg_rain == datum.max_rain"},
+        {
+          "calculate": "'Highest: ' + format(datum.avg_rain, '.2f') + ' mm'",
+          "as": "label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dy": -8,
+        "color": "black",
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "x": {"field": "Month", "type": "ordinal"},
+        "y": {"field": "avg_rain", "type": "quantitative"},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "transform": [
+        {
+          "joinaggregate": [
+            {"op": "min", "field": "avg_rain", "as": "min_rain"}
+          ]
+        },
+        {"filter": "datum.avg_rain == datum.min_rain"},
+        {
+          "calculate": "'Lowest: ' + format(datum.avg_rain, '.2f') + ' mm'",
+          "as": "label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dy": -8,
+        "color": "black",
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "x": {"field": "Month", "type": "ordinal"},
+        "y": {"field": "avg_rain", "type": "quantitative"},
+        "text": {"field": "label"}
+      }
+    },
+     {
+      "data": {
+        "values": [
+          {"month": "November"}, 
+          {"month": "March"}
+        ]
+      },
+      "mark": {"type": "rule", "color": "orange", "strokeDash": [5, 5], "strokeWidth": 2},
+      "encoding": {
+        "x": {"field": "month", "type": "nominal"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"month": "November", "label": "Northeast Monsoon Start"},
+          {"month": "March", "label": "Northeast Monsoon End"}
+        ]
+      },
+      "mark": {"type": "text", "dy": -10, "color": "orange", "fontWeight": 600},
+      "encoding": {
+        "x": {"field": "month", "type": "nominal"},
+        "y": {"value": 0},
+        "text": {"field": "label"}
+        
+      }
+    }
+  ]
+} 
