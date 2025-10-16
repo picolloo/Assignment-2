@@ -6,10 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/style.css">
+     <!-- Import pure.css -->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="all">
 
     <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
 
     <script src="js/vega_lite_vis.js"></script>
@@ -18,9 +21,105 @@
 </head>
 
 <body>
-   
-    <div id="map"></div>
-    <div id="boxplot"></div>
+    <div class="page">
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <h1>Floods, Rainfall and Losses Across Malaysia</h1>
+                <p>Floods are one of Malaysia’s most frequent natural hazards, 
+                    often linked to seasonal rainfall patterns. This dashboard provides 
+                    an overview of flood occurrences across Malaysian states from 2000 
+                    to 2024. The map displays relative flood frequency per state, 
+                    normalized against the state with the highest flood count. Click 
+                    on a state to explore its monthly rainfall for the 
+                    selected year, helping you understand how rainfall patterns relate to 
+                    flood events.
+                </p>
+            </div>
+        </div>
+        <div>
+             <h2>
+                Floods and Monthy Rainfall in Malaysia
+            </h2>
+        </div>
+
+        <div id="map" class="vis-container"></div>
+
+        <div class="pure-g">
+            <div class="pure-u-1-4">
+                <div class="description description-left">
+                <h2>Rainfall Variability</h2>
+                <p>Malaysia’s rainfall patterns vary widely across regions due to differing exposure to the Northeast Monsoon.
+                    The box plot visualizes the distribution of daily rainfall (mm) across states, highlighting how 
+                    <strong>Monsoon-Affected</strong> regions generally experience <strong>higher rainfall medians</strong> and 
+                    <strong>wider variability</strong> compared to less affected states. The <strong>broader interquartile ranges</strong> 
+                    for eastern coastal states suggest <strong>greater day-to-day rainfall fluctuations</strong>, aligning with seasonal monsoon impacts.
+                </p>
+                </div>
+            </div>
+            <div class="pure-u-3-4">
+                <div id="boxplot" class="vis-container"></div>
+            </div>
+        </div>
+       
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <h2>Flood Conservation and Emergency Losses</h2>
+                <div id="stackedbar" class="vis-container"></div>
+            </div>
+            <div class="pure-u-1-2">
+                <div class="description description-left">
+               
+                <p>This grouped stacked bar chart compares the <b>flood emergency</b> and <b>conservation losses</b> 
+                    across Malaysian states in <b>2022 and 2023</b>.
+                </p>
+                <p>From the chart, it is clear that <b>overall losses decreased significantly from 2022 to 2023</b> 
+                    in most states. For example, <b>Selangor</b> recorded a sharp drop from over <b>RM69,000</b> 
+                    in total losses in 2022 to only about <b>RM7,957</b> in 2023. Similarly, states like <b>Kelantan</b>,
+                    <b>Sabah</b>, and <b>Pahang</b> also saw noticeable declines, suggesting improved flood control 
+                    measures or fewer severe flood events in 2023.
+                </p>
+                <p>However, not all states followed this trend. <b>Perak</b> experienced a notable <b>increase 
+                    in total loss</b>, rising from around <b>RM18,199</b> in 2022 to <b>RM26,358</b> in 2023, 
+                    mainly driven by higher emergency losses. This could indicate localised flood incidents or 
+                    new vulnerabilities emerging in 2023.
+                </p>
+
+                </div>
+            </div>
+            <div class="pure-u-1-2">
+                <div class="description" >
+                    <p>In terms of loss composition, most states in 2022 had <b>higher conservation losses</b> 
+                        compared to emergency losses, meaning more resources were allocated to recovery and 
+                        preventive measures. In 2023, this balance shifted towards <b>emergency losses</b> 
+                        in several states, suggesting that while overall damage was reduced, <b>immediate 
+                        response costs remained relatively high</b> in certain regions.
+                    </p>
+                    <p>Overall, the chart highlights an encouraging pattern, <b>nationwide flood impacts are 
+                        declining</b>, but continued attention is needed in states to sustain this improvement. 
+                        The data also emphasises the importance of maintaining effective flood conservation 
+                        programs even during years of lower flood activity.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+       
+
+        <div class="pure-g">
+            <div class="pure-u-1-1 small-font">
+                <p>This visualisation is created by Heun Yee Ching on 16/10/2025.
+                    <br>Data sources:
+                    <br><a href="https://www.kaggle.com/datasets/rajatjurel/malaysia-flood-dataset2000-2010?resource=download" target="_blank">Flood dataset (2000-2010)</a>
+                    <br><a href="https://helix-tools-api.idmcdb.org/external-api/gidd/disasters/disaster-export/?iso3__in=MYS&start_year=2008&end_year=2024&release_environment=RELEASE&client_id=IDMCWSHSOLO009&release_environment=RELEASE" target="_blank">Flood dataset (2008-2024)</a>
+                    <br><a href="https://data.gov.my/dashboard/weather-and-climate" target="_blank">Rainfall data 1</a>
+                    <br><a href="https://archive.data.gov.my/data/en_US/dataset/daily-projected-rainfall-for-scenario-mria1b-by-state-in-peninsular-malaysia" target="_blank">Rainfall data 2</a>
+                    <br><a href="https://open.dosm.gov.my/publications/flood_impact_2023" target="_blank">Flood impact data</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+    
 </body>
 
 </html>

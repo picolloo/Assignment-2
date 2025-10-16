@@ -1,49 +1,32 @@
 {
 	"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-	"title": "Floods and Rainfall in Malaysia (2000 - 2024)",
-	"padding": {
-		"left": 10
-	},
+	
 	"params": [
 		{
 			"name": "selected_year",
 			"value": 2014,
 			"bind": {
 				"input": "select",
-				"options": [
-					"2014",
-					"2015",
-					"2016",
-					"2017",
-					"2018",
-					"2019",
-					"2020"
-				],
+				"options": ["2014","2015","2016","2017","2018","2019","2020"],
 				"name": "Select Year: "
 			}
 		}
 	],
 	"vconcat": [
 		{
-			"title": "Floods in Malaysia (2000 - 2024) - Total per State",
-			"width": 900,
-			"height": 400,
+			"title": "Floods in Malaysia (2000 - 2024)",
+			"width":800,
+			"height": 300,
 			"projection": {
 				"type": "mercator",
-				"center": [
-					109.5,
-					10
-				],
-				"scale": 2300
+				"center": [109.5,8],
+				"scale": 2150
 			},
 			"layer": [
 				{
 					"data": {
 						"graticule": {
-							"step": [
-								3,
-								3
-							]
+							"step": [3,3]
 						}
 					},
 					"mark": {
@@ -78,9 +61,7 @@
 							"name": "selected_state",
 							"select": {
 								"type": "point",
-								"fields": [
-									"state_name"
-								],
+								"fields": ["state_name"],
 								"on": "click"
 							}
 						}
@@ -104,9 +85,7 @@
 									"url": "https://raw.githubusercontent.com/picolloo/Assignment-2/main/data/flood_dataset.csv"
 								},
 								"key": "STATE",
-								"fields": [
-									"FLOOD"
-								]
+								"fields": ["FLOOD"]
 							}
 						},
 						{
@@ -139,7 +118,8 @@
 								"scheme": "blues"
 							},
 							"legend": {
-								"title": "Relative Flood Frequency"
+								"title": "Relative Flood Frequency",
+								"orient": "bottom"
 							}
 						},
 						"opacity": {
@@ -174,7 +154,7 @@
 					"expr": "selected_state.state_name && selected_state.state_name.length ? 'Monthly Total Rainfall in Year ' + selected_year + ' (' + selected_state.state_name[0] + ')': 'Monthly Total Rainfall in Year ' + selected_year + ' (Johor)'"
 				}
 			},
-			"width": 900,
+			"width": 800,
 			"height": 300,
 			"data": {
 				"url": "https://raw.githubusercontent.com/picolloo/Assignment-2/main/data/rainfall.csv"
@@ -206,20 +186,7 @@
 							"field": "Month",
 							"type": "ordinal",
 							"scale": {
-								"domain": [
-									"January",
-									"February",
-									"March",
-									"April",
-									"May",
-									"June",
-									"July",
-									"August",
-									"September",
-									"October",
-									"November",
-									"December"
-								]
+								"domain": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 							},
 							"axis": {
                         "labelAngle": -45
@@ -268,10 +235,7 @@
 					"mark": {
 						"type": "rule",
 						"color": "orange",
-						"strokeDash": [
-							5,
-							5
-						],
+						"strokeDash": [5, 5],
 						"strokeWidth": 2
 					},
 					"encoding": {
@@ -393,5 +357,10 @@
 				}
 			]
 		}
-	]
+	],
+	"resolve": {
+		"legend": {
+			"color": "independent"
+		}
+	}
 }

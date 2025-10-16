@@ -1,7 +1,7 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "title": "Flood Loss by Category and Year across States (2022–2023)",
-    "width": 900,
+    "width": 790,
     "height": 500,
     "data": {
         "url": "https://raw.githubusercontent.com/picolloo/Assignment-2/main/data/flood_loss.csv"
@@ -50,7 +50,8 @@
                     "#1f77b4",
                     "#ff7f0e"
                 ]
-            }
+            },
+            "legend":{"orient": "top-left"}
         },
         "xOffset": {
             "field": "Year",
