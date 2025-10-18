@@ -6,8 +6,10 @@
 			"name": "selected_year",
 			"value": 2014,
 			"bind": {
-				"input": "select",
-				"options": ["2014","2015","2016","2017","2018","2019","2020"],
+				"input": "range",
+				"min": 2014,
+				"max": 2020,
+				"step": 1,
 				"name": "Select Year: "
 			}
 		}
