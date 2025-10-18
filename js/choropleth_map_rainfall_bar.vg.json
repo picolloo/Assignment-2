@@ -12,10 +12,18 @@
 			}
 		}
 	],
+	"config": {
+				"title": {
+					"fontSize": 16,
+					"font": "Open Sans",
+					"fontWeight":"normal"
+				}
+			},
 	"vconcat": [
 		{
 			"title": "Floods in Malaysia (2000 - 2024)",
-			"width":800,
+			
+			"width":750,
 			"height": 300,
 			"projection": {
 				"type": "mercator",
@@ -43,11 +51,6 @@
 							"feature": "ne_10m_admin_0_countries"
 						}
 					},
-					"transform": [
-						{
-							"filter": "indexof(['Thailand','Indonesia','Brunei','Singapore','Philippines','Vietnam','Cambodia'], datum.properties.NAME) >= 0"
-						}
-					],
 					"mark": {
 						"type": "geoshape",
 						"fill": "#E0E0E0",
@@ -154,7 +157,7 @@
 					"expr": "selected_state.state_name && selected_state.state_name.length ? 'Monthly Total Rainfall in Year ' + selected_year + ' (' + selected_state.state_name[0] + ')': 'Monthly Total Rainfall in Year ' + selected_year + ' (Johor)'"
 				}
 			},
-			"width": 800,
+			"width": 750,
 			"height": 300,
 			"data": {
 				"url": "https://raw.githubusercontent.com/picolloo/Assignment-2/main/data/rainfall.csv"
@@ -179,7 +182,7 @@
 				{
 					"mark": {
 						"type": "bar",
-						"color": "#4B9CD3"
+						"color": "#7ABFFF"
 					},
 					"encoding": {
 						"x": {
@@ -234,7 +237,7 @@
 					},
 					"mark": {
 						"type": "rule",
-						"color": "orange",
+						"color": "#F54927",
 						"strokeDash": [5, 5],
 						"strokeWidth": 2
 					},
@@ -261,7 +264,7 @@
 					"mark": {
 						"type": "text",
 						"dy": -15,
-						"color": "orange",
+						"color": "#F54927",
 						"fontWeight": 600
 					},
 					"encoding": {

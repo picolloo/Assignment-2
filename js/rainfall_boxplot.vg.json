@@ -1,168 +1,150 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "width": 595,
-    "height": 400,
-    "data": {
-        "url": "https://raw.githubusercontent.com/picolloo/Assignment-2/main/data/rainfall.csv"
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 572,
+  "height": 400,
+  "data": {
+    "url": "https://raw.githubusercontent.com/picolloo/Assignment-2/main/data/rainfall.csv"
+  },
+  "transform": [
+    {
+      "calculate": "toNumber(datum['Average Rainfall'])",
+      "as": "Average Rainfall"
     },
-    "transform": [
+    {
+      "calculate": "indexof(['Kelantan','Terengganu','Pahang','Johor','Sabah','Sarawak', 'Labuan'], datum.State) >= 0 ? 'Monsoon-Affected' : 'Less Affected'",
+      "as": "Monsoon Group"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "boxplot", "extent": 2, "size": 30},
+      "encoding": {
+        "x": {
+          "field": "State",
+          "type": "nominal",
+          "title": "State",
+          "sort": "-y",
+          "axis": {"labelAngle": -45}
+        },
+        "y": {
+          "field": "Average Rainfall",
+          "type": "quantitative",
+          "title": "Daily Rainfall (mm)"
+        },
+        "color": {
+          "field": "Monsoon Group",
+          "type": "nominal",
+          "title": "Monsoon Influence",
+          "scale": {
+            "domain": ["Monsoon-Affected", "Less Affected"],
+            "range": ["#FFAC69", "#C4C4C4"]
+          },
+          "legend": {"orient": "top-left"}
+        },
+        "tooltip": [
+          {"field": "State", "type": "nominal"},
+          {"field": "Monsoon Group", "type": "nominal"},
+          {
+            "field": "Average Rainfall",
+            "type": "quantitative",
+            "title": "Average Daily Rainfall (mm)"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
         {
-            "calculate": "toNumber(datum['Average Rainfall'])",
-            "as": "Average Rainfall"
+          "aggregate": [
+            {"op": "median", "field": "Average Rainfall", "as": "medianRain"}
+          ],
+          "groupby": ["State", "Monsoon Group"]
         },
         {
-            "calculate": "indexof(['Kelantan','Terengganu','Pahang','Johor','Sabah','Sarawak'], datum.State) >= 0 ? 'Monsoon-Affected' : 'Less Affected'",
-            "as": "Monsoon Group"
+          "joinaggregate": [
+            {"op": "max", "field": "medianRain", "as": "maxMedian"},
+            {"op": "min", "field": "medianRain", "as": "minMedian"}
+          ]
         }
-    ],
-    "layer": [
+      ],
+      "layer": [
         {
-            "mark": {
-                "type": "boxplot",
-                "extent": 2,
-                "size": 30
-            },
-            "encoding": {
-                "x": {
-                    "field": "State",
-                    "type": "nominal",
-                    "title": "State",
-                    "sort": "-y",
-                    "axis": {
-                        "labelAngle": -45
-                    }
-                },
-                "y": {
-                    "field": "Average Rainfall",
-                    "type": "quantitative",
-                    "title": "Daily Rainfall (mm)"
-                },
-                "color": {
-                    "field": "Monsoon Group",
-                    "type": "nominal",
-                    "title": "Monsoon Influence",
-                    "scale": {
-                        "domain": [
-                            "Monsoon-Affected",
-                            "Less Affected"
-                        ],
-                        "range": [
-                            "#1f77b4",
-                            "#b8e160"
-                        ]
-                    },
-                    "legend": {"orient": "top-left"}
-                },
-                "tooltip": [
-                    {
-                        "field": "State",
-                        "type": "nominal"
-                    },
-                    {
-                        "field": "Monsoon Group",
-                        "type": "nominal"
-                    },
-                    {
-                        "field": "Average Rainfall",
-                        "type": "quantitative",
-                        "title": "Average Daily Rainfall (mm)"
-                    }
-                ]
+          "transform": [
+            {"filter": "datum.medianRain == datum.maxMedian"},
+            {
+              "calculate": "'Highest Median: ' + format(datum.medianRain, '.2f') + ' mm'",
+              "as": "label"
             }
+          ],
+          "mark": {
+            "type": "text",
+            "align": "center",
+            "dy": -270,
+            "dx": -40,
+            "fontWeight": "bold"
+          },
+          "encoding": {
+            "x": {"field": "State", "type": "nominal"},
+            "y": {"field": "medianRain", "type": "quantitative"},
+            "text": {"field": "label"}
+          }
         },
         {
-            "transform": [
-                {
-                    "aggregate": [
-                        {
-                            "op": "median",
-                            "field": "Average Rainfall",
-                            "as": "medianRain"
-                        }
-                    ],
-                    "groupby": [
-                        "State",
-                        "Monsoon Group"
-                    ]
-                },
-                {
-                    "joinaggregate": [
-                        {
-                            "op": "max",
-                            "field": "medianRain",
-                            "as": "maxMedian"
-                        },
-                        {
-                            "op": "min",
-                            "field": "medianRain",
-                            "as": "minMedian"
-                        }
-                    ]
-                }
-            ],
-            "layer": [
-                {
-                    "transform": [
-                        {
-                            "filter": "datum.medianRain == datum.maxMedian"
-                        },
-                        {
-                            "calculate": "'Highest Median: ' + format(datum.medianRain, '.2f') + ' mm'",
-                            "as": "label"
-                        }
-                    ],
-                    "mark": {
-                        "type": "text",
-                        "align": "center",
-                        "dy": -40,
-                        "fontWeight": "bold"
-                    },
-                    "encoding": {
-                        "x": {
-                            "field": "State",
-                            "type": "nominal"
-                        },
-                        "y": {
-                            "field": "medianRain",
-                            "type": "quantitative"
-                        },
-                        "text": {
-                            "field": "label"
-                        }
-                    }
-                },
-                {
-                    "transform": [
-                        {
-                            "filter": "datum.medianRain == datum.minMedian"
-                        },
-                        {
-                            "calculate": "'Lowest Median: ' + format(datum.medianRain, '.2f') + ' mm'",
-                            "as": "label"
-                        }
-                    ],
-                    "mark": {
-                        "type": "text",
-                        "align": "center",
-                        "dy": 18,
-                        "fontWeight": "bold"
-                    },
-                    "encoding": {
-                        "x": {
-                            "field": "State",
-                            "type": "nominal"
-                        },
-                        "y": {
-                            "field": "medianRain",
-                            "type": "quantitative"
-                        },
-                        "text": {
-                            "field": "label"
-                        }
-                    }
-                }
-            ]
+          "transform": [{"filter": "datum.medianRain == datum.maxMedian"}],
+          "mark": {
+            "type": "rule",
+            "strokeDash": [4, 4],
+            "strokeWidth": 1.5,
+            "color": "gray"
+          },
+          "encoding": {
+            "x": {"field": "State", "type": "nominal"},
+            "x2": {"value": 450},
+            "y": {"field": "medianRain", "type": "quantitative"},
+            "y2": {"value": 50}
+          }
+        },
+        {
+          "transform": [{"filter": "datum.medianRain == datum.minMedian"}],
+          "mark": {
+            "type": "rule",
+            "strokeDash": [4, 4],
+            "strokeWidth": 1.5,
+            "color": "gray"
+          },
+          "encoding": {
+            "x": {"field": "State", "type": "nominal"},
+            "x2": {"value": 190},
+            "y": {"field": "medianRain", "type": "quantitative"},
+            "y2": {"value": 100}
+          }
+        },
+        {
+          "transform": [
+            {"filter": "datum.medianRain == datum.minMedian"},
+            {
+              "calculate": "'Lowest Median: ' + format(datum.medianRain, '.2f') + ' mm'",
+              "as": "label"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "align": "center",
+            "dy": -270,
+            "dx": -40,
+            "fontWeight": "bold"
+          },
+          "encoding": {
+            "x": {"field": "State", "type": "nominal"},
+            "y": {"field": "minMedian", "type": "quantitative"},
+            "text": {"field": "label"}
+          }
         }
-    ],
-    "title": "Rainfall Variability by State (2014 – 2020)"
+      ]
+    }
+  ],
+  "title": "Rainfall Variability by State (2014 – 2020)",
+  "config": {
+    "title": {"fontSize": 16, "font": "Open Sans", "fontWeight": "normal"}
+  }
 }

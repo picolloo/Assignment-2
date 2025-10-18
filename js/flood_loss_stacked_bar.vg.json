@@ -1,88 +1,79 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "Flood Loss by Category and Year across States (2022–2023)",
-    "width": 790,
-    "height": 500,
-    "data": {
-        "url": "https://raw.githubusercontent.com/picolloo/Assignment-2/main/data/flood_loss.csv"
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 760,
+  "height": 500,
+  "data": {
+    "url": "https://raw.githubusercontent.com/picolloo/Assignment-2/main/data/flood_loss.csv"
+  },
+  "transform": [
+    {
+      "fold": ["Flood emergency loss", "Flood conservation loss"],
+      "as": ["Category", "LossValue"]
     },
-    "transform": [
-        {
-            "fold": [
-                "Flood emergency loss",
-                "Flood conservation loss"
-            ],
-            "as": [
-                "Category",
-                "LossValue"
-            ]
-        },
-        {
-            "calculate": "toNumber(datum.LossValue)",
-            "as": "LossValueNum"
-        },
-        {
-            "calculate": "toNumber(datum['total loss'])",
-            "as": "totalLoss"
-        }
-    ],
-    "encoding": {
+    {"calculate": "toNumber(datum.LossValue)", "as": "LossValueNum"},
+    {"calculate": "toNumber(datum['total loss'])", "as": "totalLoss"}
+  ],
+  
+  "layer": [
+    {
+      "mark": {"type": "bar", "stroke": "black", "strokeWidth": 0.8},
+      "encoding": {
         "x": {
-            "field": "State",
-            "type": "nominal",
-            "axis": {
-                "labelAngle": -45
-            },
-            "title": "State"
+          "field": "State",
+          "type": "nominal",
+          "axis": {"labelAngle": -45},
+          "title": "State"
         },
         "y": {
-            "aggregate": "sum",
-            "field": "LossValueNum",
-            "type": "quantitative",
-            "title": "Flood Loss (RM)"
+          "aggregate": "sum",
+          "field": "LossValueNum",
+          "type": "quantitative",
+          "title": "Flood Loss (RM)"
         },
         "color": {
-            "field": "Category",
-            "type": "nominal",
-            "title": "Loss Type",
-            "scale": {
-                "range": [
-                    "#1f77b4",
-                    "#ff7f0e"
-                ]
-            },
-            "legend":{"orient": "top-left"}
+          "field": "Category",
+          "type": "nominal",
+          "title": "Loss Type",
+          "scale": {"range": ["#98E4F1", "#D2F198"]},
+          "legend": {"orient": "top-left"}
         },
-        "xOffset": {
-            "field": "Year",
-            "type": "nominal",
-            "title": "Year"
-        },
+        "xOffset": {"field": "Year", "type": "nominal"},
         "tooltip": [
-            {
-                "field": "State"
-            },
-            {
-                "field": "Year"
-            },
-            {
-                "field": "Category"
-            },
-            {
-                "field": "LossValueNum",
-                "title": "Loss Value (RM)",
-                "format": ",.0f"
-            },
-            {
-                "field": "totalLoss",
-                "title": "Total Loss (RM)",
-                "format": ",.0f"
-            }
+          {"field": "State"},
+          {"field": "Year"},
+          {"field": "Category"},
+          {"field": "LossValueNum", "title": "Loss Value (RM)", "format": ",.0f"},
+          {"field": "totalLoss", "title": "Total Loss (RM)", "format": ",.0f"}
         ]
+      }
     },
-    "mark": {
-        "type": "bar",
-        "stroke": "black",
-        "strokeWidth": 0.8
+    {
+      "data": {
+        "values": [
+          {
+            "State": "Selangor",
+            "Year": "2022",
+            "annotation": "Severe flash floods in Klang Valley due to Tropical\n Depression 29W (late 2021–early 2022)"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": -280,         
+        "dy": -150,       
+        "fontWeight": "normal",
+        "fontSize": 12,
+        "lineBreak": "\n"
+      },
+      "encoding": {
+        "x": {"field": "State", "type": "nominal"},
+        "xOffset": {"field": "Year", "type": "nominal"},
+       
+        "text": {"field": "annotation"}
+      }
     }
+  ]
 }
+
